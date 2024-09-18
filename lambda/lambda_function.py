@@ -26,7 +26,7 @@ class MyMorningRemediesHandler(AbstractRequestHandler):
         slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'remedio')
         random_fact_type = random.choice(data)
         ramdom_fact = random.choice(ramdom_fact_type)
-        speech = GET_FACT_MESSAGE + ramdom_fact.nome - ramdom_fact.marca. "É um" + random_fact.indicacao.
+        speech = GET_FACT_MESSAGE + ramdom_fact.nome - ramdom_fact.marca + "É um" + random_fact.indicacao.
 
         handler_input.response_builder.speak(speech).set_card(
             SimpleCard(SKILL_NAME, ramdom_fact))
@@ -45,7 +45,7 @@ class MyAfternoonRemediesHandler(AbstractRequestHandler):
         slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'remedio')
         random_fact_type = random.choice(data)
         ramdom_fact = random.choice(ramdom_fact_type)
-        speech = GET_FACT_MESSAGE + ramdom_fact.nome - ramdom_fact.marca. "É um" + random_fact.indicacao.
+        speech = GET_FACT_MESSAGE + ramdom_fact.nome - ramdom_fact.marca + "É um" + random_fact.indicacao.
 
         handler_input.response_builder.speak(speech).set_card(
             SimpleCard(SKILL_NAME, ramdom_fact))
@@ -64,7 +64,7 @@ class MyNightRemediesHandler(AbstractRequestHandler):
         slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'remedio')
         random_fact_type = random.choice(data)
         ramdom_fact = random.choice(ramdom_fact_type)
-        speech = GET_FACT_MESSAGE + ramdom_fact.nome - ramdom_fact.marca. "É um" + random_fact.indicacao.
+        speech = GET_FACT_MESSAGE + ramdom_fact.nome - ramdom_fact.marca + "É um" + random_fact.indicacao.
 
         handler_input.response_builder.speak(speech).set_card(
             SimpleCard(SKILL_NAME, ramdom_fact))
