@@ -14,11 +14,24 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
+class LaunchRequestHandler(AbstractRequestHandler):
+
+    def can_handle(self, handler_input):
+        return (is_request_type("LaunchRequest")(handler_input))
+
+    def handle(self, handler_input):
+        logger.info("In LaunchRequestHandler")
+
+        speech = "Bem vindo senhor ou senhora, ao Medicação Inteligente. Como posso te ajudar?"
+
+        handler_input.response_builder.speak(speech).set_card(
+            SimpleCard(SKILL_NAME, ramdom_fact))
+        return handler_input.response_builder.response
+    
 class MyMorningRemediesHandler(AbstractRequestHandler):
 
     def can_handle(self, handler_input):
-        return (is_request_type("LaunchRequest")(handler_input) or
-                is_intent_name("MyMorningRemediesIntent")(handler_input))
+        return (is_intent_name("MyMorningRemediesIntent")(handler_input))
 
     def handle(self, handler_input):
         logger.info("In MyMorningRemediesHandler")
@@ -26,7 +39,7 @@ class MyMorningRemediesHandler(AbstractRequestHandler):
         slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'remedio')
         random_fact_type = random.choice(data)
         ramdom_fact = random.choice(ramdom_fact_type)
-        speech = GET_FACT_MESSAGE + ramdom_fact.nome - ramdom_fact.marca + "É um" + random_fact.indicacao.
+        speech = GET_FACT_MESSAGE + ramdom_fact.nome - ramdom_fact.marca + "É um" + random_fact.indicacao
 
         handler_input.response_builder.speak(speech).set_card(
             SimpleCard(SKILL_NAME, ramdom_fact))
@@ -36,8 +49,7 @@ class MyMorningRemediesHandler(AbstractRequestHandler):
 class MyAfternoonRemediesHandler(AbstractRequestHandler):
 
     def can_handle(self, handler_input):
-        return (is_request_type("LaunchRequest")(handler_input) or
-                is_intent_name("MyAfternoonRemediesIntent")(handler_input))
+        return (is_intent_name("MyAfternoonRemediesIntent")(handler_input))
 
     def handle(self, handler_input):
         logger.info("In MyAfternoonRemediesHandler")
@@ -45,7 +57,7 @@ class MyAfternoonRemediesHandler(AbstractRequestHandler):
         slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'remedio')
         random_fact_type = random.choice(data)
         ramdom_fact = random.choice(ramdom_fact_type)
-        speech = GET_FACT_MESSAGE + ramdom_fact.nome - ramdom_fact.marca + "É um" + random_fact.indicacao.
+        speech = GET_FACT_MESSAGE + ramdom_fact.nome - ramdom_fact.marca + "É um" + random_fact.indicacao
 
         handler_input.response_builder.speak(speech).set_card(
             SimpleCard(SKILL_NAME, ramdom_fact))
@@ -55,8 +67,7 @@ class MyAfternoonRemediesHandler(AbstractRequestHandler):
 class MyNightRemediesHandler(AbstractRequestHandler):
 
     def can_handle(self, handler_input):
-        return (is_request_type("LaunchRequest")(handler_input) or
-                is_intent_name("MyNightRemediesIntent")(handler_input))
+        return (is_intent_name("MyNightRemediesIntent")(handler_input))
 
     def handle(self, handler_input):
         logger.info("In MyNightRemediesHandler")
@@ -64,7 +75,7 @@ class MyNightRemediesHandler(AbstractRequestHandler):
         slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'remedio')
         random_fact_type = random.choice(data)
         ramdom_fact = random.choice(ramdom_fact_type)
-        speech = GET_FACT_MESSAGE + ramdom_fact.nome - ramdom_fact.marca + "É um" + random_fact.indicacao.
+        speech = GET_FACT_MESSAGE + ramdom_fact.nome - ramdom_fact.marca + "É um" + random_fact.indicacao
 
         handler_input.response_builder.speak(speech).set_card(
             SimpleCard(SKILL_NAME, ramdom_fact))
@@ -140,6 +151,7 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
 
 sb = SkillBuilder()
 
+sb.add_request_handler(LaunchRequestHandler())
 sb.add_request_handler(MyMorningRemediesHandler())
 sb.add_request_handler(MyAfternoonRemediesHandler())
 sb.add_request_handler(MyNightRemediesHandler())

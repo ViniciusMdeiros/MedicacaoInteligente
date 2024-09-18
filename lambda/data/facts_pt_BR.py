@@ -1,6 +1,7 @@
-data = [
-    # Medicamento - Dor de cabeça
-  "1": [
+data = [  
+  # Medicamento - Dor de cabeça
+  [
+
     {
       "nome": "Paracetamol",
       "marca": "Tylenol",
@@ -28,7 +29,7 @@ data = [
     }
   ],
   #Medicamento - Pressão Alta
-  "2": [
+  [
     {
       "nome": "Hidroclorotiazida",
       "indicacao": "Diurético tiazídico amplamente utilizado para reduzir a pressão arterial ao eliminar excesso de sal e água"
@@ -72,7 +73,7 @@ data = [
     }
   ],
   #Medicamento - Gripe
-  "3": [
+  [
     {
       "nome": "Antigripal",
       "marca": "Benegrip",
@@ -86,7 +87,7 @@ data = [
       "nome": "Resfenol",
       "indicacao": "Antigripal que combina analgésico, antitérmico e descongestionante para aliviar sintomas gripais"
     }
-  ],
+  ]
 ]
 
 SKILL_NAME = "Medicação Inteligente"
