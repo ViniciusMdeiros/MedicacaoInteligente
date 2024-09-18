@@ -1,65 +1,97 @@
 import logging
-import ask_sdk_core.utils as ask_utils
-
+import random
+from ask_sdk_core.utils import is_request_type, is_intent_name
 from ask_sdk_core.skill_builder import SkillBuilder
-from ask_sdk_core.dispatch_components import AbstractRequestHandler
-from ask_sdk_core.dispatch_components import AbstractExceptionHandler
+from ask_sdk_core.dispatch_components import AbstractRequestHandler, AbstractExceptionHandler
 from ask_sdk_core.handler_input import HandlerInput
-
 from ask_sdk_model import Response
-
-from data.facts_pt_BR import data, GET_FACT_MESSAGE, SKILL_NAME, HELP_MESSAGE, HELP_REPROMPT, STOP_MESSAGE
-
+from ask_sdk_model.ui import SimpleCard
+from ask_sdk_core.utils import get_intent_name
+from ask_sdk_core.utils import get_slot_value 
 from data.facts_pt_BR import data, GET_FACT_MESSAGE, SKILL_NAME, HELP_MESSAGE, HELP_REPROMPT, STOP_MESSAGE
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
+class LaunchRequestHandler(AbstractRequestHandler):
+
+    def can_handle(self, handler_input):
+        return is_request_type("LaunchRequest")(handler_input)
+
+    def handle(self, handler_input):
+        logger.info("In LaunchRequestHandler")
+
+        speech = "Bem vindo senhor ou senhora, ao Medicação Inteligente. Como posso te ajudar?"
+
+        handler_input.response_builder.speak(speech).set_card(
+            SimpleCard(SKILL_NAME, speech))
+        return handler_input.response_builder.response
+
+
 class MyMorningRemediesHandler(AbstractRequestHandler):
 
     def can_handle(self, handler_input):
-        # type: (HandlerInput) -> bool
-
-        return ask_utils.is_request_type("LaunchRequest")(handler_input)
+        return is_intent_name("MyMorningRemediesIntent")(handler_input)
 
     def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
-        speak_output = "Welcome, you can say Hello or Help. Which would you like to try?"
+        logger.info("In MyMorningRemediesHandler")
 
-        return (
-            handler_input.response_builder
-                .speak(speak_output)
-                .ask(speak_output)
-                .response
-        )
+        slot_value = get_slot_value(handler_input, 'remedio')
+        random_fact_type = random.choice(data)
+        random_fact = random.choice(random_fact_type)
+        speech = (GET_FACT_MESSAGE + random_fact["nome"] + " - " + random_fact["marca"] + 
+                  " é um " + random_fact["indicacao"])
+
+        handler_input.response_builder.speak(speech).set_card(
+            SimpleCard(SKILL_NAME, speech))
+        return handler_input.response_builder.response
+
+
+class MyAfternoonRemediesHandler(AbstractRequestHandler):
+
+    def can_handle(self, handler_input):
+        return is_intent_name("MyAfternoonRemediesIntent")(handler_input)
+
+    def handle(self, handler_input):
+        logger.info("In MyAfternoonRemediesHandler")
+
+        slot_value = get_slot_value(handler_input, 'remedio')
+        random_fact_type = random.choice(data)
+        random_fact = random.choice(random_fact_type)
+        speech = (GET_FACT_MESSAGE + random_fact["nome"] + " - " + random_fact["marca"] + 
+                  " é um " + random_fact["indicacao"])
+
+        handler_input.response_builder.speak(speech).set_card(
+            SimpleCard(SKILL_NAME, speech))
+        return handler_input.response_builder.response
 
 
 class MyNightRemediesHandler(AbstractRequestHandler):
 
     def can_handle(self, handler_input):
-        return (is_request_type("LaunchRequest")(handler_input) or
-                is_intent_name("MyNightRemediesIntent")(handler_input))
+        return is_intent_name("MyNightRemediesIntent")(handler_input)
 
     def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
-        speak_output = "Hello World!"
+        logger.info("In MyNightRemediesHandler")
 
-        return (
-            handler_input.response_builder
-                .speak(speak_output)
-                # .ask("add a reprompt if you want to keep the session open for the user to respond")
-                .response
-        )
+        slot_value = get_slot_value(handler_input, 'remedio')
+        random_fact_type = random.choice(data)
+        random_fact = random.choice(random_fact_type)
+        speech = (GET_FACT_MESSAGE + random_fact["nome"] + " - " + random_fact["marca"] + 
+                  " é um " + random_fact["indicacao"])
+
+        handler_input.response_builder.speak(speech).set_card(
+            SimpleCard(SKILL_NAME, speech))
+        return handler_input.response_builder.response
 
 
 class HelpIntentHandler(AbstractRequestHandler):
 
     def can_handle(self, handler_input):
-        return ask_utils.is_intent_name("AMAZON.HelpIntent")(handler_input)
+        return is_intent_name("AMAZON.HelpIntent")(handler_input)
 
     def handle(self, handler_input):
-
         return (
             handler_input.response_builder
                 .speak(HELP_MESSAGE)
@@ -71,8 +103,8 @@ class HelpIntentHandler(AbstractRequestHandler):
 class CancelOrStopIntentHandler(AbstractRequestHandler):
 
     def can_handle(self, handler_input):
-        return (ask_utils.is_intent_name("AMAZON.CancelIntent")(handler_input) or
-                ask_utils.is_intent_name("AMAZON.StopIntent")(handler_input))
+        return (is_intent_name("AMAZON.CancelIntent")(handler_input) or
+                is_intent_name("AMAZON.StopIntent")(handler_input))
 
     def handle(self, handler_input):
         speak_output = STOP_MESSAGE
@@ -89,10 +121,10 @@ class IntentReflectorHandler(AbstractRequestHandler):
     It will simply repeat the intent name."""
 
     def can_handle(self, handler_input):
-        return ask_utils.is_request_type("IntentRequest")(handler_input)
+        return is_request_type("IntentRequest")(handler_input)
 
     def handle(self, handler_input):
-        intent_name = ask_utils.get_intent_name(handler_input)
+        intent_name = get_intent_name(handler_input)
         speak_output = "Você acabou de acionar " + intent_name + "."
 
         return (
@@ -122,6 +154,7 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
 
 sb = SkillBuilder()
 
+sb.add_request_handler(LaunchRequestHandler())
 sb.add_request_handler(MyMorningRemediesHandler())
 sb.add_request_handler(MyAfternoonRemediesHandler())
 sb.add_request_handler(MyNightRemediesHandler())

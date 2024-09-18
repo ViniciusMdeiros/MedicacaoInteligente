@@ -24,9 +24,9 @@
             }
           ],
           "samples": [
-            "Qual é o remédio da manhã",
-            "Me diga o remédio da manhã",
-            "Que remédio devo tomar pela manhã"
+            "Qual é o {remedio} da manhã",
+            "Me diga o {remedio} da manhã",
+            "Que {remedio} devo tomar pela manhã"
           ]
         },
         {
@@ -38,9 +38,9 @@
             }
           ],
           "samples": [
-            "Qual é o remédio da tarde",
-            "Me diga o remédio da tarde",
-            "Que remédio devo tomar à tarde"
+            "Qual é o {remedio} da tarde",
+            "Me diga o {remedio} da tarde",
+            "Que {remedio} devo tomar à tarde"
           ]
         },
         {
@@ -52,9 +52,9 @@
             }
           ],
           "samples": [
-            "Qual é o remédio da noite",
-            "Me diga o remédio da noite",
-            "Que remédio devo tomar à noite"
+            "Qual é o {remedio} da noite",
+            "Me diga o {remedio} da noite",
+            "Que {remedio} devo tomar à noite"
           ]
         }
       ],
@@ -64,7 +64,7 @@
           "values": [
             {
               "name": {
-                "value": "Remédio"
+                "value": "remédio"
               }
             },
             {
