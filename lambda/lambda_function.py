@@ -10,6 +10,8 @@ from ask_sdk_model import Response
 
 from data.facts_pt_BR import data, GET_FACT_MESSAGE, SKILL_NAME, HELP_MESSAGE, HELP_REPROMPT, STOP_MESSAGE
 
+from data.facts_pt_BR import data, GET_FACT_MESSAGE, SKILL_NAME, HELP_MESSAGE, HELP_REPROMPT, STOP_MESSAGE
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
@@ -17,39 +19,20 @@ logger.setLevel(logging.INFO)
 class MyMorningRemediesHandler(AbstractRequestHandler):
 
     def can_handle(self, handler_input):
-        return (is_request_type("LaunchRequest")(handler_input) or
-                is_intent_name("MyMorningRemediesIntent")(handler_input))
+        # type: (HandlerInput) -> bool
+
+        return ask_utils.is_request_type("LaunchRequest")(handler_input)
 
     def handle(self, handler_input):
-        logger.info("In MyMorningRemediesHandler")
+        # type: (HandlerInput) -> Response
+        speak_output = "Welcome, you can say Hello or Help. Which would you like to try?"
 
-        slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'remedio')
-        random_fact_type = random.choice(data)
-        ramdom_fact = random.choice(ramdom_fact_type)
-        speech = GET_FACT_MESSAGE + ramdom_fact.nome - ramdom_fact.marca + "É um" + random_fact.indicacao
-
-        handler_input.response_builder.speak(speech).set_card(
-            SimpleCard(SKILL_NAME, ramdom_fact))
-        return handler_input.response_builder.response
-
-
-class MyAfternoonRemediesHandler(AbstractRequestHandler):
-
-    def can_handle(self, handler_input):
-        return (is_request_type("LaunchRequest")(handler_input) or
-                is_intent_name("MyAfternoonRemediesIntent")(handler_input))
-
-    def handle(self, handler_input):
-        logger.info("In MyAfternoonRemediesHandler")
-
-        slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'remedio')
-        random_fact_type = random.choice(data)
-        ramdom_fact = random.choice(ramdom_fact_type)
-        speech = GET_FACT_MESSAGE + ramdom_fact.nome - ramdom_fact.marca+ "É um" + random_fact.indicacao
-
-        handler_input.response_builder.speak(speech).set_card(
-            SimpleCard(SKILL_NAME, ramdom_fact))
-        return handler_input.response_builder.response
+        return (
+            handler_input.response_builder
+                .speak(speak_output)
+                .ask(speak_output)
+                .response
+        )
 
 
 class MyNightRemediesHandler(AbstractRequestHandler):
@@ -59,16 +42,15 @@ class MyNightRemediesHandler(AbstractRequestHandler):
                 is_intent_name("MyNightRemediesIntent")(handler_input))
 
     def handle(self, handler_input):
-        logger.info("In MyNightRemediesHandler")
+        # type: (HandlerInput) -> Response
+        speak_output = "Hello World!"
 
-        slotValue = Alexa.getSlotValue(handlerInput.requestEnvelope, 'remedio')
-        random_fact_type = random.choice(data)
-        ramdom_fact = random.choice(ramdom_fact_type)
-        speech = GET_FACT_MESSAGE + ramdom_fact.nome - ramdom_fact.marca + "É um" + random_fact.indicacao
-
-        handler_input.response_builder.speak(speech).set_card(
-            SimpleCard(SKILL_NAME, ramdom_fact))
-        return handler_input.response_builder.response
+        return (
+            handler_input.response_builder
+                .speak(speak_output)
+                # .ask("add a reprompt if you want to keep the session open for the user to respond")
+                .response
+        )
 
 
 class HelpIntentHandler(AbstractRequestHandler):

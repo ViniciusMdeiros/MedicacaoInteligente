@@ -1,0 +1,1 @@
+Medicação Inteligente - Alexa Skill
