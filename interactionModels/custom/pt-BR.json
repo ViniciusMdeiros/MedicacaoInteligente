@@ -1,0 +1,90 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "medicacao inteligente",
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "MyMorningRemediesIntent",
+          "slots": [
+            {
+              "name": "remedio",
+              "type": "RemedyType"
+            }
+          ],
+          "samples": [
+            "Qual é o {remedio} da manhã",
+            "Me diga o {remedio} da manhã",
+            "Que {remedio} devo tomar pela manhã"
+          ]
+        },
+        {
+          "name": "MyAfternoonRemediesIntent",
+          "slots": [
+            {
+              "name": "remedio",
+              "type": "RemedyType"
+            }
+          ],
+          "samples": [
+            "Qual é o {remedio} da tarde",
+            "Me diga o {remedio} da tarde",
+            "Que {remedio} devo tomar à tarde"
+          ]
+        },
+        {
+          "name": "MyNightRemediesIntent",
+          "slots": [
+            {
+              "name": "remedio",
+              "type": "RemedyType"
+            }
+          ],
+          "samples": [
+            "Qual é o {remedio} da noite",
+            "Me diga o {remedio} da noite",
+            "Que {remedio} devo tomar à noite"
+          ]
+        }
+      ],
+      "types": [
+        {
+          "name": "RemedyType",
+          "values": [
+            {
+              "name": {
+                "value": "remédio"
+              }
+            },
+            {
+              "name": {
+                "value": "Paracetamol"
+              }
+            },
+            {
+              "name": {
+                "value": "Ibuprofeno"
+              }
+            },
+            {
+              "name": {
+                "value": "Dipirona"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
