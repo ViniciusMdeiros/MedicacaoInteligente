@@ -40,8 +40,8 @@ class MyMorningRemediesHandler(AbstractRequestHandler):
         slot_value = get_slot_value(handler_input, 'remedio')
         random_fact_type = random.choice(data)
         random_fact = random.choice(random_fact_type)
-        speech = (GET_FACT_MESSAGE + random_fact("nome") + " - " + random_fact("marca")+ 
-                  " é um " + random_fact("indicacao"))
+        speech = (GET_FACT_MESSAGE + random_fact["nome"] + " - " + random_fact["marca"] + 
+                  " é um " + random_fact["indicacao"])
 
         handler_input.response_builder.speak(speech).set_card(
             SimpleCard(SKILL_NAME, speech))
