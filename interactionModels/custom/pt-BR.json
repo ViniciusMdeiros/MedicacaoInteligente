@@ -1,7 +1,6 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "medicacao inteligente",
       "intents": [
         {
           "name": "AMAZON.CancelIntent",
@@ -16,13 +15,13 @@
           "samples": []
         },
         {
-          "name": "MyMorningRemediesIntent",
           "slots": [
             {
               "name": "remedio",
               "type": "RemedyType"
             }
           ],
+          "name": "MyMorningRemediesIntent",
           "samples": [
             "Qual é o {remedio} da manhã",
             "Me diga o {remedio} da manhã",
@@ -30,13 +29,13 @@
           ]
         },
         {
-          "name": "MyAfternoonRemediesIntent",
           "slots": [
             {
               "name": "remedio",
               "type": "RemedyType"
             }
           ],
+          "name": "MyAfternoonRemediesIntent",
           "samples": [
             "Qual é o {remedio} da tarde",
             "Me diga o {remedio} da tarde",
@@ -44,13 +43,13 @@
           ]
         },
         {
-          "name": "MyNightRemediesIntent",
           "slots": [
             {
               "name": "remedio",
               "type": "RemedyType"
             }
           ],
+          "name": "MyNightRemediesIntent",
           "samples": [
             "Qual é o {remedio} da noite",
             "Me diga o {remedio} da noite",
@@ -60,7 +59,6 @@
       ],
       "types": [
         {
-          "name": "RemedyType",
           "values": [
             {
               "name": {
@@ -82,9 +80,11 @@
                 "value": "Dipirona"
               }
             }
-          ]
+          ],
+          "name": "RemedyType"
         }
-      ]
+      ],
+      "invocationName": "medicacao inteligente"
     }
   }
 }
