@@ -24,7 +24,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
 
         speech = "Bem vindo senhor ou senhora, ao Medicação Inteligente. Como posso te ajudar?"
 
-        handler_input.response_builder.speak(speech).set_card(
+        handler_input.response_builder.ask(speech).set_card(
             SimpleCard(SKILL_NAME, speech))
         return handler_input.response_builder.response
 
