@@ -22,9 +22,10 @@ class LaunchRequestHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         logger.info("In LaunchRequestHandler")
 
-        speech = "Bem vindo senhor ou senhora, ao Medicação Inteligente. Como posso te ajudar?"
+        speech = "Bem vindo senhor ou senhora, ao Medicação Inteligente."
+        ask = "Como posso te ajudar?"
 
-        handler_input.response_builder.ask(speech).set_card(
+        handler_input.response_builder.speak(speech).ask(ask).set_card(
             SimpleCard(SKILL_NAME, speech))
         return handler_input.response_builder.response
 
