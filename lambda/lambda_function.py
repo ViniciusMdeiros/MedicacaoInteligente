@@ -13,10 +13,10 @@ from ask_sdk_core.handler_input import HandlerInput
 from ask_sdk_model.ui import SimpleCard
 from ask_sdk_model import Response
 
-sb = SkillBuilder()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-        
+
+
 class LaunchRequestHandler(AbstractRequestHandler):
 
     def can_handle(self, handler_input):
@@ -162,10 +162,15 @@ sb.add_request_handler(LaunchRequestHandler())
 sb.add_request_handler(MyMorningRemediesHandler())
 sb.add_request_handler(MyAfternoonRemediesHandler())
 sb.add_request_handler(MyNightRemediesHandler())
+
 sb.add_request_handler(HelpIntentHandler())
 sb.add_request_handler(CancelOrStopIntentHandler())
 sb.add_request_handler(IntentReflectorHandler())
 
 sb.add_exception_handler(CatchAllExceptionHandler())
+
+sb.add_global_request_interceptor(LocalizationInterceptor())
+sb.add_global_request_interceptor(RequestLogger())
+sb.add_global_response_interceptor(ResponseLogger())
 
 lambda_handler = sb.lambda_handler()
