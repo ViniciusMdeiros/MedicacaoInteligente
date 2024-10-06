@@ -1,19 +1,22 @@
-import logging
 import random
-from ask_sdk_core.utils import is_request_type, is_intent_name
+import logging
+import json
+import prompts
+
 from ask_sdk_core.skill_builder import SkillBuilder
-from ask_sdk_core.dispatch_components import AbstractRequestHandler, AbstractExceptionHandler
+from ask_sdk_core.dispatch_components import (
+    AbstractRequestHandler, AbstractExceptionHandler,
+    AbstractRequestInterceptor, AbstractResponseInterceptor)
+from ask_sdk_core.utils import is_request_type, is_intent_name
 from ask_sdk_core.handler_input import HandlerInput
-from ask_sdk_model import Response
+
 from ask_sdk_model.ui import SimpleCard
-from ask_sdk_core.utils import get_intent_name
-from ask_sdk_core.utils import get_slot_value 
-from data.facts_pt_BR import data, GET_FACT_MESSAGE, SKILL_NAME, HELP_MESSAGE, HELP_REPROMPT, STOP_MESSAGE
+from ask_sdk_model import Response
 
+sb = SkillBuilder()
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-
-
+logger.setLevel(logging.DEBUG)
+        
 class LaunchRequestHandler(AbstractRequestHandler):
 
     def can_handle(self, handler_input):
