@@ -4,7 +4,6 @@
 import random
 import logging
 import json
-import prompts
 
 from ask_sdk_core.skill_builder import SkillBuilder
 from ask_sdk_core.dispatch_components import (
@@ -25,6 +24,10 @@ GET_FACT_MESSAGE = "Aqui está o fato sobre o remédio: "
 SKILL_NAME = "Medicação Inteligente"
 EXCEPTION_MESSAGE = "Desculpe, ocorreu um erro. Por favor, tente novamente."
 HELP_REPROMPT = "Em que mais posso te ajudar?"
+STOP_MESSAGE = "Até mais!"
+FALLBACK_MESSAGE = "Desculpe, não entendi isso. Por favor, tente novamente."
+FALLBACK_REPROMPT = "Em que mais posso te ajudar?"
+HELP_MESSAGE = "Você pode me pedir para falar sobre um remédio pela manhã, tarde ou noite."
 data = [
     [
         {"nome": "Paracetamol", "marca": "Tylenol", "indicacao": "analgésico"},
@@ -116,13 +119,11 @@ class HelpIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         logger.info("In HelpIntentHandler")
 
-        data = handler_input.attributes_manager.request_attributes["_"]
-
-        speech = data[prompts.HELP_MESSAGE]
-        reprompt = data[prompts.HELP_REPROMPT]
+        speech = HELP_MESSAGE
+        reprompt = HELP_REPROMPT
         handler_input.response_builder.speak(speech).ask(
             reprompt).set_card(SimpleCard(
-                data[prompts.SKILL_NAME], speech))
+                SKILL_NAME, speech))
         return handler_input.response_builder.response
 
 
@@ -136,9 +137,7 @@ class CancelOrStopIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         logger.info("In CancelOrStopIntentHandler")
 
-        data = handler_input.attributes_manager.request_attributes["_"]
-
-        speech = data[prompts.STOP_MESSAGE]
+        speech = STOP_MESSAGE
         handler_input.response_builder.speak(speech)
         return handler_input.response_builder.response
 
@@ -152,10 +151,8 @@ class FallbackIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         logger.info("In FallbackIntentHandler")
 
-        data = handler_input.attributes_manager.request_attributes["_"]
-
-        speech = data[prompts.FALLBACK_MESSAGE]
-        reprompt = data[prompts.FALLBACK_REPROMPT]
+        speech = FALLBACK_MESSAGE
+        reprompt = FALLBACK_REPROMPT
         handler_input.response_builder.speak(speech).ask(reprompt)
         return handler_input.response_builder.response
 
