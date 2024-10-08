@@ -32,6 +32,23 @@ data = [
     ]
 ]
 
+
+class LaunchRequestHandler(AbstractRequestHandler):
+
+    def can_handle(self, handler_input):
+        return is_request_type("LaunchRequest")(handler_input)
+
+    def handle(self, handler_input):
+        logger.info("In LaunchRequestHandler")
+
+        speech = "Bem vindo senhor ou senhora, ao Medicação Inteligente."
+        ask = "Como posso te ajudar?"
+
+        handler_input.response_builder.speak(speech).ask(ask).set_card(
+            SimpleCard(SKILL_NAME, speech))
+        return handler_input.response_builder.response
+
+
 # Built-in Intent Handlers
 class MyMorningRemediesHandler(AbstractRequestHandler):
 
