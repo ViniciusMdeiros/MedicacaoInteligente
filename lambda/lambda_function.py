@@ -155,6 +155,7 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
                 .response
         )
         
+    
 class LocalizationInterceptor(AbstractRequestInterceptor):
     """
     Add function to request attributes, that can load locale specific data.
