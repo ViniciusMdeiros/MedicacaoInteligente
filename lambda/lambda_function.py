@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-"""Simple fact sample app."""
-
 import random
 import logging
 import json
@@ -16,103 +13,148 @@ from ask_sdk_core.handler_input import HandlerInput
 from ask_sdk_model.ui import SimpleCard
 from ask_sdk_model import Response
 
-sb = SkillBuilder()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 
-# Built-in Intent Handlers
-class GetNewFactHandler(AbstractRequestHandler):
-    """Handler for Skill Launch and GetNewFact Intent."""
+class LaunchRequestHandler(AbstractRequestHandler):
 
     def can_handle(self, handler_input):
-        # type: (HandlerInput) -> bool
-        return (is_request_type("LaunchRequest")(handler_input) or
-                is_intent_name("GetNewFactIntent")(handler_input))
+        return is_request_type("LaunchRequest")(handler_input)
 
     def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
-        logger.info("In GetNewFactHandler")
+        logger.info("In LaunchRequestHandler")
 
-        # get localization data
-        data = handler_input.attributes_manager.request_attributes["_"]
+        speech = "Bem vindo senhor ou senhora, ao Medicação Inteligente."
+        ask = "Como posso te ajudar?"
 
-        random_fact = random.choice(data[prompts.FACTS])
-        speech = data[prompts.GET_FACT_MESSAGE].format(random_fact)
+        handler_input.response_builder.speak(speech).ask(ask).set_card(
+            SimpleCard(SKILL_NAME, speech))
+        return handler_input.response_builder.response
+
+
+class MyMorningRemediesHandler(AbstractRequestHandler):
+
+    def can_handle(self, handler_input):
+        return is_intent_name("MyMorningRemediesIntent")(handler_input)
+
+    def handle(self, handler_input):
+        logger.info("In MyMorningRemediesHandler")
+
+        slot_value = get_slot_value(handler_input, 'remedio')
+        random_fact_type = random.choice(data)
+        random_fact = random.choice(random_fact_type)
+        speech = (GET_FACT_MESSAGE + random_fact["nome"] + " - " + random_fact["marca"] + 
+                  " é um " + random_fact["indicacao"])
 
         handler_input.response_builder.speak(speech).set_card(
-            SimpleCard(data[prompts.SKILL_NAME], random_fact))
+            SimpleCard(SKILL_NAME, speech))
+        return handler_input.response_builder.response
+
+
+class MyAfternoonRemediesHandler(AbstractRequestHandler):
+
+    def can_handle(self, handler_input):
+        return is_intent_name("MyAfternoonRemediesIntent")(handler_input)
+
+    def handle(self, handler_input):
+        logger.info("In MyAfternoonRemediesHandler")
+
+        slot_value = get_slot_value(handler_input, 'remedio')
+        random_fact_type = random.choice(data)
+        random_fact = random.choice(random_fact_type)
+        speech = (GET_FACT_MESSAGE + random_fact["nome"] + " - " + random_fact["marca"] + 
+                  " é um " + random_fact["indicacao"])
+
+        handler_input.response_builder.speak(speech).set_card(
+            SimpleCard(SKILL_NAME, speech))
+        return handler_input.response_builder.response
+
+
+class MyNightRemediesHandler(AbstractRequestHandler):
+
+    def can_handle(self, handler_input):
+        return is_intent_name("MyNightRemediesIntent")(handler_input)
+
+    def handle(self, handler_input):
+        logger.info("In MyNightRemediesHandler")
+
+        slot_value = get_slot_value(handler_input, 'remedio')
+        random_fact_type = random.choice(data)
+        random_fact = random.choice(random_fact_type)
+        speech = (GET_FACT_MESSAGE + random_fact["nome"] + " - " + random_fact["marca"] + 
+                  " é um " + random_fact["indicacao"])
+
+        handler_input.response_builder.speak(speech).set_card(
+            SimpleCard(SKILL_NAME, speech))
         return handler_input.response_builder.response
 
 
 class HelpIntentHandler(AbstractRequestHandler):
-    """Handler for Help Intent."""
 
     def can_handle(self, handler_input):
-        # type: (HandlerInput) -> bool
         return is_intent_name("AMAZON.HelpIntent")(handler_input)
 
     def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
-        logger.info("In HelpIntentHandler")
-
-        # get localization data
-        data = handler_input.attributes_manager.request_attributes["_"]
-
-        speech = data[prompts.HELP_MESSAGE]
-        reprompt = data[prompts.HELP_REPROMPT]
-        handler_input.response_builder.speak(speech).ask(
-            reprompt).set_card(SimpleCard(
-                data[prompts.SKILL_NAME], speech))
-        return handler_input.response_builder.response
+        return (
+            handler_input.response_builder
+                .speak(HELP_MESSAGE)
+                .ask(HELP_REPROMPT)
+                .response
+        )
 
 
 class CancelOrStopIntentHandler(AbstractRequestHandler):
-    """Single handler for Cancel and Stop Intent."""
 
     def can_handle(self, handler_input):
-        # type: (HandlerInput) -> bool
         return (is_intent_name("AMAZON.CancelIntent")(handler_input) or
                 is_intent_name("AMAZON.StopIntent")(handler_input))
 
     def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
-        logger.info("In CancelOrStopIntentHandler")
+        speak_output = STOP_MESSAGE
 
-        # get localization data
-        data = handler_input.attributes_manager.request_attributes["_"]
-
-        speech = data[prompts.STOP_MESSAGE]
-        handler_input.response_builder.speak(speech)
-        return handler_input.response_builder.response
+        return (
+            handler_input.response_builder
+                .speak(speak_output)
+                .response
+        )
 
 
-class FallbackIntentHandler(AbstractRequestHandler):
-    """Handler for Fallback Intent.
-
-    AMAZON.FallbackIntent is only available in en-US locale.
-    This handler will not be triggered except in that locale,
-    so it is safe to deploy on any locale.
-    """
+class IntentReflectorHandler(AbstractRequestHandler):
+    """The intent reflector is used for interaction model testing and debugging.
+    It will simply repeat the intent name."""
 
     def can_handle(self, handler_input):
-        # type: (HandlerInput) -> bool
-        return is_intent_name("AMAZON.FallbackIntent")(handler_input)
+        return is_request_type("IntentRequest")(handler_input)
 
     def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
-        logger.info("In FallbackIntentHandler")
+        intent_name = get_intent_name(handler_input)
+        speak_output = "Você acabou de acionar " + intent_name + "."
 
-        # get localization data
-        data = handler_input.attributes_manager.request_attributes["_"]
-
-        speech = data[prompts.FALLBACK_MESSAGE]
-        reprompt = data[prompts.FALLBACK_REPROMPT]
-        handler_input.response_builder.speak(speech).ask(
-            reprompt)
-        return handler_input.response_builder.response
+        return (
+            handler_input.response_builder
+                .speak(speak_output)
+                .response
+        )
 
 
+class CatchAllExceptionHandler(AbstractExceptionHandler):
+
+    def can_handle(self, handler_input, exception):
+        return True
+
+    def handle(self, handler_input, exception):
+        logger.error(exception, exc_info=True)
+
+        speak_output = "Desculpe, tive problemas para fazer o que você pediu. Por favor, tente novamente."
+
+        return (
+            handler_input.response_builder
+                .speak(speak_output)
+                .ask(speak_output)
+                .response
+        )
+        
 class LocalizationInterceptor(AbstractRequestInterceptor):
     """
     Add function to request attributes, that can load locale specific data.
@@ -136,46 +178,8 @@ class LocalizationInterceptor(AbstractRequestInterceptor):
         else:
             data = language_data[locale]
         handler_input.attributes_manager.request_attributes["_"] = data
+        
 
-
-class SessionEndedRequestHandler(AbstractRequestHandler):
-    """Handler for Session End."""
-
-    def can_handle(self, handler_input):
-        # type: (HandlerInput) -> bool
-        return is_request_type("SessionEndedRequest")(handler_input)
-
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
-        logger.info("In SessionEndedRequestHandler")
-
-        logger.info("Session ended reason: {}".format(
-            handler_input.request_envelope.request.reason))
-        return handler_input.response_builder.response
-
-
-# Exception Handler
-class CatchAllExceptionHandler(AbstractExceptionHandler):
-    """Catch all exception handler, log exception and
-    respond with custom message.
-    """
-
-    def can_handle(self, handler_input, exception):
-        # type: (HandlerInput, Exception) -> bool
-        return True
-
-    def handle(self, handler_input, exception):
-        # type: (HandlerInput, Exception) -> Response
-        logger.info("In CatchAllExceptionHandler")
-        logger.error(exception, exc_info=True)
-
-        handler_input.response_builder.speak(EXCEPTION_MESSAGE).ask(
-            HELP_REPROMPT)
-
-        return handler_input.response_builder.response
-
-
-# Request and Response loggers
 class RequestLogger(AbstractRequestInterceptor):
     """Log the alexa requests."""
 
@@ -193,20 +197,22 @@ class ResponseLogger(AbstractResponseInterceptor):
         logger.debug("Alexa Response: {}".format(response))
 
 
-# Register intent handlers
-sb.add_request_handler(GetNewFactHandler())
+
+sb = SkillBuilder()
+
+sb.add_request_handler(LaunchRequestHandler())
+sb.add_request_handler(MyMorningRemediesHandler())
+sb.add_request_handler(MyAfternoonRemediesHandler())
+sb.add_request_handler(MyNightRemediesHandler())
+
 sb.add_request_handler(HelpIntentHandler())
 sb.add_request_handler(CancelOrStopIntentHandler())
-sb.add_request_handler(FallbackIntentHandler())
-sb.add_request_handler(SessionEndedRequestHandler())
+sb.add_request_handler(IntentReflectorHandler())
 
-# Register exception handlers
 sb.add_exception_handler(CatchAllExceptionHandler())
 
-# Register request and response interceptors
 sb.add_global_request_interceptor(LocalizationInterceptor())
 sb.add_global_request_interceptor(RequestLogger())
 sb.add_global_response_interceptor(ResponseLogger())
 
-# Handler name that is used on AWS lambda
 lambda_handler = sb.lambda_handler()
