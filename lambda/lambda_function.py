@@ -226,6 +226,7 @@ class ResponseLogger(AbstractResponseInterceptor):
         logger.debug(f"Alexa Response: {response}")
 
 
+sb.add_request_handler(LaunchRequestHandler())
 sb.add_request_handler(MyMorningRemediesHandler())
 sb.add_request_handler(MyAfternoonRemediesHandler())
 sb.add_request_handler(MyNightRemediesHandler())
