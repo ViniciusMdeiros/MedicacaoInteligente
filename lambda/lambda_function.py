@@ -43,11 +43,17 @@ class LaunchRequestHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         logger.info("In LaunchRequestHandler")
 
-        speech = "Bem vindo senhor ou senhora, ao Medicação Inteligente."
-        ask = "Como posso te ajudar?"
+        try:
+            speech = "Bem vindo senhor ou senhora, ao Medicação Inteligente."
+            ask = "Como posso te ajudar?"
 
-        handler_input.response_builder.speak(speech).ask(ask).set_card(
-            SimpleCard(SKILL_NAME, speech))
+            handler_input.response_builder.speak(speech).ask(ask).set_card(
+                SimpleCard(SKILL_NAME, speech))
+            logger.info("LaunchRequestHandler response success")
+        except Exception as e:
+            logger.error(f"Erro no LaunchRequestHandler: {e}", exc_info=True)
+            raise e
+
         return handler_input.response_builder.response
 
 
