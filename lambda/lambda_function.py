@@ -35,7 +35,6 @@ data = [
     ]
 ]
 
-
 class LaunchRequestHandler(AbstractRequestHandler):
 
     def can_handle(self, handler_input):
@@ -67,7 +66,11 @@ class MyMorningRemediesHandler(AbstractRequestHandler):
         speech = (GET_FACT_MESSAGE + random_fact["nome"] + " - " + random_fact["marca"] + 
                   " é um " + random_fact["indicacao"])
 
-        handler_input.response_builder.speak(speech).set_card(
+        # Limpa o valor do slot após o uso, se necessário
+        handler_input.request_envelope.request.intent.slots['remedio'].value = None
+
+        # Mantém a sessão aberta com ask()
+        handler_input.response_builder.speak(speech).ask("Em que mais posso te ajudar?").set_card(
             SimpleCard(SKILL_NAME, speech))
         return handler_input.response_builder.response
 
@@ -86,7 +89,11 @@ class MyAfternoonRemediesHandler(AbstractRequestHandler):
         speech = (GET_FACT_MESSAGE + random_fact["nome"] + " - " + random_fact["marca"] + 
                   " é um " + random_fact["indicacao"])
 
-        handler_input.response_builder.speak(speech).set_card(
+        # Limpa o valor do slot após o uso, se necessário
+        handler_input.request_envelope.request.intent.slots['remedio'].value = None
+
+        # Mantém a sessão aberta com ask()
+        handler_input.response_builder.speak(speech).ask("Em que mais posso te ajudar?").set_card(
             SimpleCard(SKILL_NAME, speech))
         return handler_input.response_builder.response
 
@@ -105,7 +112,11 @@ class MyNightRemediesHandler(AbstractRequestHandler):
         speech = (GET_FACT_MESSAGE + random_fact["nome"] + " - " + random_fact["marca"] + 
                   " é um " + random_fact["indicacao"])
 
-        handler_input.response_builder.speak(speech).set_card(
+        # Limpa o valor do slot após o uso, se necessário
+        handler_input.request_envelope.request.intent.slots['remedio'].value = None
+
+        # Mantém a sessão aberta com ask()
+        handler_input.response_builder.speak(speech).ask("Em que mais posso te ajudar?").set_card(
             SimpleCard(SKILL_NAME, speech))
         return handler_input.response_builder.response
 
