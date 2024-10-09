@@ -19,7 +19,6 @@ sb = SkillBuilder()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-# Constantes e variáveis globais
 GET_FACT_MESSAGE = "Aqui está o fato sobre o remédio: "
 SKILL_NAME = "Medicação Inteligente"
 EXCEPTION_MESSAGE = "Desculpe, ocorreu um erro. Por favor, tente novamente."
@@ -57,7 +56,6 @@ class LaunchRequestHandler(AbstractRequestHandler):
         return handler_input.response_builder.response
 
 
-# Built-in Intent Handlers
 class MyMorningRemediesHandler(AbstractRequestHandler):
 
     def can_handle(self, handler_input):
@@ -72,10 +70,8 @@ class MyMorningRemediesHandler(AbstractRequestHandler):
         speech = (GET_FACT_MESSAGE + random_fact["nome"] + " - " + random_fact["marca"] + 
                   " é um " + random_fact["indicacao"])
 
-        # Limpa o valor do slot após o uso, se necessário
         handler_input.request_envelope.request.intent.slots['remedio'].value = None
 
-        # Mantém a sessão aberta com ask()
         handler_input.response_builder.speak(speech).ask("Em que mais posso te ajudar?").set_card(
             SimpleCard(SKILL_NAME, speech))
         return handler_input.response_builder.response
@@ -95,10 +91,8 @@ class MyAfternoonRemediesHandler(AbstractRequestHandler):
         speech = (GET_FACT_MESSAGE + random_fact["nome"] + " - " + random_fact["marca"] + 
                   " é um " + random_fact["indicacao"])
 
-        # Limpa o valor do slot após o uso, se necessário
         handler_input.request_envelope.request.intent.slots['remedio'].value = None
 
-        # Mantém a sessão aberta com ask()
         handler_input.response_builder.speak(speech).ask("Em que mais posso te ajudar?").set_card(
             SimpleCard(SKILL_NAME, speech))
         return handler_input.response_builder.response
@@ -118,10 +112,8 @@ class MyNightRemediesHandler(AbstractRequestHandler):
         speech = (GET_FACT_MESSAGE + random_fact["nome"] + " - " + random_fact["marca"] + 
                   " é um " + random_fact["indicacao"])
 
-        # Limpa o valor do slot após o uso, se necessário
         handler_input.request_envelope.request.intent.slots['remedio'].value = None
 
-        # Mantém a sessão aberta com ask()
         handler_input.response_builder.speak(speech).ask("Em que mais posso te ajudar?").set_card(
             SimpleCard(SKILL_NAME, speech))
         return handler_input.response_builder.response
@@ -206,7 +198,6 @@ class SessionEndedRequestHandler(AbstractRequestHandler):
         return handler_input.response_builder.response
 
 
-# Exception Handler
 class CatchAllExceptionHandler(AbstractExceptionHandler):
     """Handler para capturar todas as exceções."""
 
@@ -221,7 +212,6 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
         return handler_input.response_builder.response
 
 
-# Request and Response loggers
 class RequestLogger(AbstractRequestInterceptor):
     """Log de requests da Alexa."""
 
@@ -236,7 +226,6 @@ class ResponseLogger(AbstractResponseInterceptor):
         logger.debug(f"Alexa Response: {response}")
 
 
-# Registrar os intent handlers
 sb.add_request_handler(MyMorningRemediesHandler())
 sb.add_request_handler(MyAfternoonRemediesHandler())
 sb.add_request_handler(MyNightRemediesHandler())
@@ -245,13 +234,10 @@ sb.add_request_handler(CancelOrStopIntentHandler())
 sb.add_request_handler(FallbackIntentHandler())
 sb.add_request_handler(SessionEndedRequestHandler())
 
-# Registrar exception handlers
 sb.add_exception_handler(CatchAllExceptionHandler())
 
-# Registrar interceptores de request e response
 sb.add_global_request_interceptor(LocalizationInterceptor())
 sb.add_global_request_interceptor(RequestLogger())
 sb.add_global_response_interceptor(ResponseLogger())
 
-# Handler para o AWS Lambda
 lambda_handler = sb.lambda_handler()
